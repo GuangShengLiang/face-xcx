@@ -6,21 +6,32 @@
         <card :text="userInfo.nickName"></card>
       </div>
     </div>
-    <li>
-    <a href="/pages/counter/main" class="counter">我的资料</a>
-    </li>
+      <div class="weui-cells weui-cells_after-title">
+        <navigator url="/pages/myinfo/main" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <div class="weui-cell__hd">
+            <image :src="icon" style="margin-right: 5px;vertical-align: middle;width:20px; height: 20px;"></image>
+          </div>
+          <div class="weui-cell__bd">my source </div>
+        </navigator>
+        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <div class="weui-cell__hd">
+            <image :src="icon" style="margin-right: 5px;vertical-align: middle;width:20px; height: 20px;"></image>
+          </div>
+          <div class="weui-cell__bd">cell standard</div>
+        </navigator>
+      </div>
   </div>
 </template>
 
 <script>
-import card from '@/components/card'
+import card from "@/components/card";
 
 export default {
-  data () {
+  data() {
     return {
-      motto: 'Hello World',
+      motto: "Hello World",
       userInfo: {}
-    }
+    };
   },
 
   components: {
@@ -28,37 +39,39 @@ export default {
   },
 
   methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      wx.navigateTo({ url })
+    bindViewTap() {
+      const url = "../logs/main";
+      wx.navigateTo({ url });
     },
-    getUserInfo () {
+    getUserInfo() {
       // 调用登录接口
       wx.login({
         success: () => {
           wx.getUserInfo({
-            success: (res) => {
-              this.userInfo = res.userInfo
+            success: res => {
+              this.userInfo = res.userInfo;
             }
-          })
+          });
         }
-      })
+      });
     },
-    clickHandle (msg, ev) {
-      console.log('clickHandle:', msg, ev)
+    clickHandle(msg, ev) {
+      console.log("clickHandle:", msg, ev);
+    },
+    openMyPage(ev) {
+      console.log("clickHandle:", msg, ev);
     }
   },
 
-  created () {
+  created() {
     // 调用应用实例的方法获取全局数据
-    this.getUserInfo()
+    this.getUserInfo();
   },
 
-  onReady () {
-    wx.setNavigationBarTitle({title: '当前页面'})
+  onReady() {
+    wx.setNavigationBarTitle({ title: "当前页面" });
   }
-
-}
+};
 </script>
 
 <style scoped>
