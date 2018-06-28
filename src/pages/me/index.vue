@@ -27,7 +27,7 @@
 import card from '@/components/card'
 
 export default {
-  data  () {
+  data () {
     return {
       motto: 'Hello World',
       userInfo: {}

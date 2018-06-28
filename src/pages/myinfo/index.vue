@@ -1,13 +1,15 @@
 <template>
       <div class="weui-cells weui-cells_after-title">
-        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <div class="weui-cell">
           <div class="weui-cell__bd">头像</div>
           <div class="weui-cell__ft weui-cell__ft_in-access"></div>
-        </navigator>
-        <navigator url="" @click="openSex" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-          <div class="weui-cell__bd" >性别</div>
-          <div class="weui-cell__ft weui-cell__ft_in-access"></div>
-        </navigator>
+        </div>
+      <picker class="weui-cells weui-cells_after-title" @change="bindPickerChange" :value="index" :range="sexArr">
+        <div class="weui-cell">
+          <div class="weui-cell__bd">性别</div>
+          <div class="weui-cell__ft weui-cell__ft_in-access">{{userInfo.sex}}</div>
+        </div>
+      </picker>
       </div>
 </template>
 
@@ -17,8 +19,10 @@ import card from '@/components/card'
 export default {
   data () {
     return {
+      sexArr: ['男', '女'],
+      sexIndex: 0,
       motto: 'Hello World',
-      userInfo: {}
+      userInfo: {sex: '男'}
     }
   },
 
@@ -27,6 +31,9 @@ export default {
   },
 
   methods: {
+    bindPickerChange (e) {
+      this.userInfo.sex = this.sexArr[e.mp.detail.value]
+    },
     bindViewTap () {
       const url = '../logs/main'
       wx.navigateTo({ url })
@@ -35,7 +42,8 @@ export default {
       wx.showActionSheet({
         itemList: ['男', '女'],
         success: function (res) {
-          console.log(res.tapIndex)
+          // this.userInfo.sex = this.itemList[0]
+          console.log(this.itemList[0])
         }
       })
     },
@@ -59,6 +67,10 @@ export default {
   created () {
     // 调用应用实例的方法获取全局数据
     this.getUserInfo()
+  },
+
+  onReady () {
+    this.userInfo = {sex: '男'}
   }
 }
 </script>
