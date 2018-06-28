@@ -1,25 +1,14 @@
 <template>
-  <div class="container" @click="clickHandle('test click', $event)">
-
-    <div class="userinfo" @click="bindViewTap">
-      <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
-      <div class="userinfo-nickname">
-        <card :text="userInfo.nickName"></card>
+      <div class="weui-cells weui-cells_after-title">
+        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <div class="weui-cell__bd">头像</div>
+          <div class="weui-cell__ft weui-cell__ft_in-access"></div>
+        </navigator>
+        <navigator url="" @click="openSex" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          <div class="weui-cell__bd" >性别</div>
+          <div class="weui-cell__ft weui-cell__ft_in-access"></div>
+        </navigator>
       </div>
-    </div>
-
-    <div class="usermotto">
-      <div class="user-motto">
-        <card :text="motto"></card>
-      </div>
-    </div>
-
-    <form class="form-container">
-      <input type="text" class="form-control" v-model="motto" placeholder="v-model" />
-      <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
-    </form>
-    <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
-  </div>
 </template>
 
 <script>
@@ -41,6 +30,14 @@ export default {
     bindViewTap () {
       const url = '../logs/main'
       wx.navigateTo({ url })
+    },
+    openSex () {
+      wx.showActionSheet({
+        itemList: ['男', '女'],
+        success: function (res) {
+          console.log(res.tapIndex)
+        }
+      })
     },
     getUserInfo () {
       // 调用登录接口
