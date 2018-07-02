@@ -1,25 +1,24 @@
 <template>
   <div class="container" @click="clickHandle('test click', $event)">
+
     <div class="userinfo" @click="bindViewTap">
       <img class="userinfo-avatar" v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" background-size="cover" />
       <div class="userinfo-nickname">
         <card :text="userInfo.nickName"></card>
       </div>
     </div>
-      <div class="weui-cells weui-cells_after-title">
-        <navigator url="/pages/myinfo/main" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-          <div class="weui-cell__hd">
-            <image :src="icon" style="margin-right: 5px;vertical-align: middle;width:20px; height: 20px;"></image>
-          </div>
-          <div class="weui-cell__bd">my source </div>
-        </navigator>
-        <navigator url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-          <div class="weui-cell__hd">
-            <image :src="icon" style="margin-right: 5px;vertical-align: middle;width:20px; height: 20px;"></image>
-          </div>
-          <div class="weui-cell__bd">cell standard</div>
-        </navigator>
+
+    <div class="usermotto">
+      <div class="user-motto">
+        <card :text="motto"></card>
       </div>
+    </div>
+
+    <form class="form-container">
+      <input type="text" class="form-control" v-model="motto" placeholder="v-model" />
+      <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
+    </form>
+    <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
   </div>
 </template>
 
@@ -48,7 +47,7 @@ export default {
       wx.login({
         success: () => {
           wx.getUserInfo({
-            success: res => {
+            success: (res) => {
               this.userInfo = res.userInfo
             }
           })
@@ -63,10 +62,6 @@ export default {
   created () {
     // 调用应用实例的方法获取全局数据
     this.getUserInfo()
-  },
-
-  onReady () {
-    wx.setNavigationBarTitle({ title: '当前页面' })
   }
 }
 </script>
