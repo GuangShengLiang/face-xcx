@@ -18,9 +18,9 @@
       <div class="list-left">
         {{company.CompanyName}}
       </div>
-      <div class="list-right" v-if="Distance > 0">
-        {{Distance}}m
-      </div>
+      <!-- <div class="list-right" v-if="Distance > 0"> -->
+        <!-- {{Distance}}m -->
+      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -42,17 +42,17 @@
           }
         }
       },
-      computed: {
-        Distance () {
-          return this.company.Distance.toFixed(0)
-        }
-      },
+      // computed: {
+      // Distance () {
+      // return this.company.Distance.toFixed(0)
+      // }
+      // },
       created () {
         console.log(this.company)
       }
     }
 </script>
-<style lang="scss">
+<style scoped lang="scss">
   .list-wrapper{
     background: #fff;
     padding: 12px;

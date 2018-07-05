@@ -1,20 +1,25 @@
 <template>
   <div class="container">
-    <div @click="go(company.Number)" >
+ <div class="list" v-for="(company, index) in companys" :key="index">
+      <div @click="go(company.Number)" >
         <lists :company="company"></lists>
       </div>
+    </div>
   </div>
 </template>
 
 <script>
 import lists from '@/components/list.vue'
-import {request, ERR_OK} from '@/utils/api'
+// import {request, ERR_OK} from '@/utils/api'
 
 export default {
   data () {
     return {
       motto: 'Hello World',
-      userInfo: {}
+      userInfo: {},
+      companys: [{Name: 'A', Salary65: '100', WorkCity: 'SH', emplType: '1', Education: 'NO', CompanyName: 'ZZ'},
+        {Name: 'A', Salary65: '100', WorkCity: 'SH', emplType: '1', Education: 'NO', CompanyName: 'ZZ'},
+        {Name: 'A', Salary65: '100', WorkCity: 'SH', emplType: '1', Education: 'NO', CompanyName: 'ZZ'}]
     }
   },
 
@@ -41,14 +46,16 @@ export default {
     },
     _getData () {
       let vm = this
-      vm.companys = null
-      request('/home').then((data) => {
-        if (data.StatusCode === ERR_OK) {
-          vm.companys = data.Positions
-          wx.stopPullDownRefresh()
-          wx.hideNavigationBarLoading()
-        }
-      })
+      vm.companys = [{Name: 'A', Salary65: '100', WorkCity: 'SH', emplType: '1', Education: 'NO', CompanyName: 'ZZ'},
+        {Name: 'A', Salary65: '100', WorkCity: 'SH', emplType: '1', Education: 'NO', CompanyName: 'ZZ'},
+        {Name: 'A', Salary65: '100', WorkCity: 'SH', emplType: '1', Education: 'NO', CompanyName: 'ZZ'}]
+      // request('/home').then((data) => {
+      //   if (data.StatusCode === ERR_OK) {
+      //     vm.companys = data.Positions
+      //     wx.stopPullDownRefresh()
+      //     wx.hideNavigationBarLoading()
+      //   }
+      // })
     },
     onPullDownRefresh: function () { // 监听下拉刷新事件
       wx.showNavigationBarLoading()
@@ -67,41 +74,43 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.userinfo-avatar {
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
-
-.userinfo-nickname {
-  color: #aaa;
-}
-
-.usermotto {
-  margin-top: 150px;
-}
-
-.form-control {
-  display: block;
-  padding: 0 12px;
-  margin-bottom: 5px;
-  border: 1px solid #ccc;
-}
-
-.counter {
-  display: inline-block;
-  margin: 10px auto;
-  padding: 5px 10px;
-  color: blue;
-  border: 1px solid blue;
-}
+<style scoped lang="scss">
+  .container{
+    background: #f8f8fa;
+    .list{
+      margin-top: 10px;
+    }
+      .bottom{
+        display: flex;
+        line-height: 43.6px;
+        .p{
+          flex: 1;
+          overflow: hidden;
+          line-height: 43.6px;
+          position: relative;
+          .avatar{
+            width: 25px;
+            height: 25px;
+            display: inline-block;
+            vertical-align: top;
+            border: 1px solid #f8f8fa;
+            position: absolute;
+            top: 10px;
+            border-radius: 50%;
+            overflow: hidden;
+            open-data{
+              width: 100%;
+              height: 100%;
+            }
+          }
+          span{
+            padding-left: 26px;
+          }
+        }
+        span{
+          flex: 0 0 80px;
+          text-align: right;
+        }
+      }
+    }
 </style>
