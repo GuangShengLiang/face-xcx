@@ -1,26 +1,18 @@
 <template>
   <div class="list-wrapper">
     <div class="list-top">
-      <div class="list-left">
-        {{company.Name}}
-      </div>
-      <div class="list-right">
-        {{company.Salary65}}
-      </div>
+        <img src="/static/images/search.png"/>
     </div>
     <div class="list-center">
       <div class="list-left">
-        {{company.WorkCity}} {{company.emplType}} {{company.Education}}
+        {{company.CompanyName}}
       </div>
       <div class="list-right"></div>
     </div>
     <div class="list-bottom" v-if="!thisCompany">
       <div class="list-left">
-        {{company.CompanyName}}
+        {{company.WorkCity}} {{company.emplType}} {{company.Education}}
       </div>
-      <!-- <div class="list-right" v-if="Distance > 0"> -->
-        <!-- {{Distance}}m -->
-      <!-- </div> -->
     </div>
   </div>
 </template>
