@@ -18,12 +18,15 @@
       <input type="text" class="form-control" v-model="motto" placeholder="v-model" />
       <input type="text" class="form-control" v-model.lazy="motto" placeholder="v-model.lazy" />
     </form>
-    <a href="/pages/counter/main" class="counter">去往Vuex示例页面</a>
+    <a href="/pages/counter/main" class="counter">往Vuex示例页面</a>
   </div>
 </template>
 
 <script>
+import fly from '@/utils/fly'
 import card from '@/components/card'
+import account from '@/utils/api/account'
+console.log('fly', fly)
 
 export default {
   data () {
@@ -56,12 +59,27 @@ export default {
     },
     clickHandle (msg, ev) {
       console.log('clickHandle:', msg, ev)
+      // wx.request({
+      //   url: 'http://localhost:8080/api/account/baseInfo?uid=1', // 仅为示例，并非真实的接口地址
+      //   header: {
+      //     'content-type': 'application/json' // 默认值
+      //   },
+      //   success: function (res) {
+      //     console.log(res.data)
+      //   }
+      // })
+      let res = account.baseInfo(1)
+      console.log('account.baseInfo', res)
     }
   },
 
   created () {
     // 调用应用实例的方法获取全局数据
     this.getUserInfo()
+  },
+
+  test () {
+    console.log('33')
   }
 }
 </script>

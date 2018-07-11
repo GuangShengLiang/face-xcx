@@ -23,14 +23,14 @@
         <div class="weui-cell">
           <div class="weui-cell__bd">昵称</div>
           <div class="weui-cell__ft">
-            <input class="" v-model="userInfo.nickName"/>
+            <input class="" v-model="userInfo.nickname"/>
           </div>
           </div>
       </div>
       <picker class="weui-cells weui-cells_after-title" @change="bindPickerChange" :value="index" :range="sexArr">
         <div class="weui-cell">
           <div class="weui-cell__bd">性别</div>
-          <div class="weui-cell__ft weui-cell__ft_in-access">{{userInfo.sex}}</div>
+          <div class="weui-cell__ft weui-cell__ft_in-access">{{sexArr[userInfo.sex]}}</div>
         </div>
       </picker>
       <picker mode="date" value="date" start="1970-01-01" end="2018-01-01" @change="bindDateChange">
@@ -53,14 +53,13 @@
 
 <script>
 import card from '@/components/card'
+import account from '@/utils/api/account'
 
 export default {
   data () {
     return {
       sexArr: ['男', '女'],
-      sexIndex: 0,
-      motto: 'Hello World',
-      userInfo: { sex: '男', brithday: '2000-01-01', nickName: 'GS.L' }
+      userInfo: {brithday: '2011-01-01'}
     }
   },
 
@@ -71,7 +70,8 @@ export default {
   methods: {
     bindPickerChange (e) {
       console.log('选中的值为：' + this.sexArr[e.mp.detail.value])
-      this.userInfo.sex = this.sexArr[e.mp.detail.value]
+      this.userInfo.sex = e.mp.detail.value
+      account.updateBaseInfo(this.userInfo)
     },
     bindViewTap () {
       const url = '../logs/main'
@@ -100,8 +100,7 @@ export default {
       wx.showActionSheet({
         itemList: ['男', '女'],
         success: function (res) {
-          // this.userInfo.sex = this.itemList[0]
-          console.log(this.itemList[0])
+          console.log('sex', res)
         }
       })
     },
@@ -127,11 +126,12 @@ export default {
 
   created () {
     // 调用应用实例的方法获取全局数据
-    this.getUserInfo()
+    // this.getUserInfo()
   },
 
   onReady () {
-    this.userInfo = { sex: '男', brithday: '2000-01-01', nickName: 'GS.L' }
+    this.userInfo = account.baseInfo(1)
+    console.log('userInfo', this.userInfo)
     wx.setNavigationBarTitle({ title: '修改资料' })
   }
 }
