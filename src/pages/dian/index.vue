@@ -1,8 +1,8 @@
 <template>
   <div class="container">
- <div class="list" v-for="(company, index) in companys" :key="index">
-      <div @click="go(company.Number)" >
-        <lists :company="company"></lists>
+ <div class="list" v-for="(p, index) in rst" :key="index">
+      <div @click="go(p.uid)" >
+        <lists :p="p"></lists>
       </div>
     </div>
   </div>
@@ -17,9 +17,9 @@ export default {
     return {
       motto: 'Hello World',
       userInfo: {},
-      companys: [{Name: 'A', Salary65: '100', WorkCity: 'SH', emplType: '1', Education: 'NO', CompanyName: 'ZZ'},
-        {Name: 'A', Salary65: '100', WorkCity: 'SH', emplType: '1', Education: 'NO', CompanyName: 'ZZ'},
-        {Name: 'A', Salary65: '100', WorkCity: 'SH', emplType: '1', Education: 'NO', CompanyName: 'ZZ'}]
+      rst: [{uid: 1, nickName: 'A', gender: '0', birthday: 'SH', city: '上海'},
+        {uid: 2, nickName: 'B', gender: '1', birthday: 'SH', city: '北京'},
+        {uid: 3, nickName: 'C', gender: '1', birthday: 'SH', city: '北京'}]
     }
   },
 
@@ -46,9 +46,9 @@ export default {
     },
     _getData () {
       let vm = this
-      vm.companys = [{Name: 'A', Salary65: '100', WorkCity: 'SH', emplType: '1', Education: 'NO', CompanyName: 'ZZ'},
-        {Name: 'A', Salary65: '100', WorkCity: 'SH', emplType: '1', Education: 'NO', CompanyName: 'ZZ'},
-        {Name: 'A', Salary65: '100', WorkCity: 'SH', emplType: '1', Education: 'NO', CompanyName: 'ZZ'}]
+      vm.rst = [{uid: 1, nickName: 'A1', gender: '0', birthday: 'SH', city: '上海'},
+        {uid: 2, nickName: 'B', gender: '1', birthday: 'SH', city: '北京'},
+        {uid: 3, nickName: 'C', gender: '1', birthday: 'SH', city: '北京'}]
       // request('/home').then((data) => {
       //   if (data.StatusCode === ERR_OK) {
       //     vm.companys = data.Positions
@@ -58,6 +58,7 @@ export default {
       // })
     },
     onPullDownRefresh: function () { // 监听下拉刷新事件
+      console.log('loadding')
       wx.showNavigationBarLoading()
       this._getData()
     },

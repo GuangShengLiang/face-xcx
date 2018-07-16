@@ -5,13 +5,12 @@
     </div>
     <div class="list-center">
       <div class="list-left">
-        {{company.CompanyName}}
       </div>
       <div class="list-right"></div>
     </div>
-    <div class="list-bottom" v-if="!thisCompany">
+    <div class="list-bottom">
       <div class="list-left">
-        {{company.WorkCity}} {{company.emplType}} {{company.Education}}
+       {{p.nickName}} {{p.gender}} {{p.city}} {{p.age}}
       </div>
     </div>
   </div>
@@ -20,10 +19,10 @@
 <script>
     export default {
       props: {
-        company: {
+        p: {
           type: Object
         },
-        thisCompany: {
+        thisP: {
           type: Boolean
         }
       },
@@ -34,11 +33,11 @@
           }
         }
       },
-      // computed: {
-      // Distance () {
-      // return this.company.Distance.toFixed(0)
-      // }
-      // },
+  //   computed: {
+  //     Distance () {
+  //       return this.company.Distance.toFixed(0)
+  //     }
+  //   },
       created () {
         console.log(this.company)
       }
