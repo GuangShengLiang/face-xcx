@@ -11,7 +11,7 @@
                 </div>
         <div class="weui-cell__bd">
         <div class="weui-uploader__input-box">
-          <div class="weui-uploader__input" @click="chooseImage"></div>
+          <div class="weui-uploader__input" @tap="uploadTap"></div>
         </div>
         </div>
         </div>
@@ -23,14 +23,14 @@
         <div class="weui-cell">
           <div class="weui-cell__bd">昵称</div>
           <div class="weui-cell__ft">
-            <input class="" v-model="userInfo.nickname"/>
+            <input class="" v-model="userInfo.nickName"/>
           </div>
           </div>
       </div>
       <picker class="weui-cells weui-cells_after-title" @change="bindPickerChange" :value="index" :range="sexArr">
         <div class="weui-cell">
           <div class="weui-cell__bd">性别</div>
-          <div class="weui-cell__ft weui-cell__ft_in-access">{{sexArr[userInfo.sex]}}</div>
+          <div class="weui-cell__ft weui-cell__ft_in-access">{{sexArr[userInfo.gender]}}</div>
         </div>
       </picker>
       <picker mode="date" value="date" start="1970-01-01" end="2018-01-01" @change="bindDateChange">
@@ -48,29 +48,95 @@
           </div>
         </div>
       </div>
-      </div>
+      <div>
+    <mpvue-cropper ref="cropper" :option="cropperOpt" @ready="cropperReady" @beforeDraw="cropperBeforeDraw"
+      @beforeImageLoad="cropperBeforeImageLoad" @beforeLoad="cropperLoad"></mpvue-cropper>
+    <div class="cropper-buttons">
+      <div class="upload" @tap="uploadTap"> 重新选择 </div>
+      <div class="getCropperImage" @tap="getCropperImage"> 完成 </div>
+    </div>
+  </div>
+</div>
 </template>
-
 <script>
-import card from '@/components/card'
 import account from '@/utils/api/account'
+import upload from '@/utils/upload'
+import MpvueCropper from 'mpvue-cropper'
+
+let wecropper
+
+const device = wx.getSystemInfoSync()
+const width = device.windowWidth
+const height = device.windowHeight - 50
 
 export default {
   data () {
     return {
       sexArr: ['男', '女'],
-      userInfo: {brithday: '2011-01-01'}
+      userInfo: {brithday: '2011-01-01', nickName: 'll'},
+      cropperOpt: {
+        id: 'cropper',
+        width,
+        height,
+        scale: 2.5,
+        zoom: 8,
+        cut: {
+          x: (width - 300) / 2,
+          y: (height - 300) / 2,
+          width: 300,
+          height: 300
+        }
+      }
     }
   },
-
   components: {
-    card
+    MpvueCropper
   },
 
   methods: {
+    cropperReady (...args) {
+      console.log('cropper ready!')
+    },
+    cropperBeforeImageLoad (...args) {
+      console.log('before image load')
+    },
+    cropperLoad (...args) {
+      console.log('image loaded')
+    },
+    cropperBeforeDraw (...args) {
+      // Todo: 绘制水印等等
+    },
+    uploadTap () {
+      wx.chooseImage({
+        count: 1, // 默认9
+        sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+        sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+        success: (res) => {
+          const src = res.tempFilePaths[0]
+          //  获取裁剪图片资源后，给data添加src属性及其值
+          console.log('wecropper', wecropper)
+          wecropper.pushOrigin(src)
+        }
+      })
+    },
+    getCropperImage () {
+      wecropper.getCropperImage()
+        .then((src) => {
+          // wx.previewImage({
+          //   current: '', // 当前显示图片的http链接
+          //   urls: [src] // 需要预览的图片http链接列表
+          // })
+          console.log(src)
+          upload.uploadFile(src)
+          // console.log(res)
+        }).catch(e => {
+          console.error('获取图片失败')
+        })
+    },
+
     bindPickerChange (e) {
       console.log('选中的值为：' + this.sexArr[e.mp.detail.value])
-      this.userInfo.sex = e.mp.detail.value
+      this.userInfo.gender = e.mp.detail.value
       account.updateBaseInfo(this.userInfo)
     },
     bindViewTap () {
@@ -96,7 +162,7 @@ export default {
         }
       })
     },
-    openSex () {
+    openGender () {
       wx.showActionSheet({
         itemList: ['男', '女'],
         success: function (res) {
@@ -123,16 +189,68 @@ export default {
       console.log('clickHandle:', msg, ev)
     }
   },
-
+  mounted () {
+    wecropper = this.$refs.cropper
+  },
+  beforeCreate () {
+    // this.userInfo = account.baseInfo(1)
+  },
   created () {
     // 调用应用实例的方法获取全局数据
     // this.getUserInfo()
+    // this.userInfo = account.baseInfo(1)
   },
-
+  onLoad () {
+    // this.userInfo = account.baseInfo(1)
+  },
+  onShow () {
+    // this.userInfo = account.baseInfo(1)
+  },
   onReady () {
-    this.userInfo = account.baseInfo(1)
-    console.log('userInfo', this.userInfo)
+    this.userInfo.nickName = 'dd'
     wx.setNavigationBarTitle({ title: '修改资料' })
   }
 }
 </script>
+<style>
+.cropper-wrapper{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: #e5e5e5;
+}
+
+.cropper-buttons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+}
+
+.cropper-buttons .upload, .cropper-buttons .getCropperImage{
+    width: 50%;
+    text-align: center;
+}
+
+.cropper{
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.cropper-buttons{
+    background-color: rgba(0, 0, 0, 0.95);
+    color: #04b00f;
+}
+</style>

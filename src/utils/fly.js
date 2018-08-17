@@ -27,6 +27,16 @@ fly.interceptors.response.use(
     // 发生网络错误后会走到这里
     if (err.status === 400) {
       console.log('fly 400', err)
+    } else if (err.status === 500) {
+    //   wx.login({
+    //     success: () => {
+    //       wx.getUserInfo({
+    //         success: (res) => {
+    //           this.userInfo = res.userInfo
+    //         }
+    //       })
+    //     }
+    //   })
     }
     // promise.resolve('ssss')
     console.log('fly err', err)

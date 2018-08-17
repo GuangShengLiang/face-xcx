@@ -1,10 +1,6 @@
 <template>
   <div class="container">
- <div class="list" v-for="(p, index) in rst" :key="index">
-      <div @click="go(p.uid)" >
-        <lists :p="p"></lists>
-      </div>
-    </div>
+    <lists></lists>
   </div>
 </template>
 
@@ -15,11 +11,8 @@ import lists from '@/components/list.vue'
 export default {
   data () {
     return {
-      motto: 'Hello World',
-      userInfo: {},
-      rst: [{uid: 1, nickName: 'A', gender: '0', birthday: 'SH', city: '上海'},
-        {uid: 2, nickName: 'B', gender: '1', birthday: 'SH', city: '北京'},
-        {uid: 3, nickName: 'C', gender: '1', birthday: 'SH', city: '北京'}]
+      page: 1,
+      rst: [{uid: 2, nickName: 'B', gender: '1', birthday: 'SH', city: '北京'}]
     }
   },
 
@@ -28,10 +21,6 @@ export default {
   },
 
   methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      wx.navigateTo({ url })
-    },
     getUserInfo () {
       // 调用登录接口
       wx.login({
@@ -44,39 +33,64 @@ export default {
         }
       })
     },
-    _getData () {
-      let vm = this
-      vm.rst = [{uid: 1, nickName: 'A1', gender: '0', birthday: 'SH', city: '上海'},
-        {uid: 2, nickName: 'B', gender: '1', birthday: 'SH', city: '北京'},
-        {uid: 3, nickName: 'C', gender: '1', birthday: 'SH', city: '北京'}]
-      // request('/home').then((data) => {
-      //   if (data.StatusCode === ERR_OK) {
-      //     vm.companys = data.Positions
-      //     wx.stopPullDownRefresh()
-      //     wx.hideNavigationBarLoading()
-      //   }
+    async getList (page = 1) {
+      wx.showLoading({
+        title: '加载中'
+      })
+      // let res = await fly.get('topics', {
+      //   tab: this.currentTab.type,
+      //   page,
+      //   limit: 20
       // })
+      // if (res.success) {
+      //   this.articleList = this.articleList.concat(res.data)
+      // }
+      this.rst.concat([{uid: 2, nickName: 'B', gender: '1', birthday: 'SH', city: '北京'},
+        {uid: 2, nickName: 'B', gender: '1', birthday: 'SH', city: '北京'},
+        {uid: 2, nickName: 'B', gender: '1', birthday: 'SH', city: '北京'},
+        {uid: 2, nickName: 'B', gender: '1', birthday: 'SH', city: '北京'},
+        {uid: 2, nickName: 'B', gender: '1', birthday: 'SH', city: '北京'},
+        {uid: 2, nickName: 'B', gender: '1', birthday: 'SH', city: '北京'},
+        {uid: 3, nickName: 'C', gender: '1', birthday: 'SH', city: '北京'}])
+      wx.hideLoading()
     },
-    onPullDownRefresh: function () { // 监听下拉刷新事件
-      console.log('loadding')
-      wx.showNavigationBarLoading()
-      this._getData()
+    go (uid) {
+      wx.navigateTo({
+        url: `/pages/detail/main?uid=${uid}`
+      })
     },
-    onReachBottom: function () {
-      console.log('加载')
+    scrollFn (e) {
+      console.log(e)
+    },
+    toLow (e) {
+      // 这里就是滚动到底部了
+      console.log('to low')
+      this.page++
+      this.getList(this.page)
     },
     onShow: function () {
       wx.startPullDownRefresh()
     }
   },
-  created () {
-    // 调用应用实例的方法获取全局数据
-    this.getUserInfo()
+  // computed: {
+  //   list () {
+  //     return this.articleList.map(item => {
+  //       delete item.content
+  //       return Object.assign(item, {
+  //         createTime: this.formatTime(item.create_at),
+  //         lastReplyTime: this.fromNow(item.last_reply_at)
+  //       })
+  //     })
+  //   }
+  // },
+  async created () {
+    this.getList()
   }
 }
 </script>
 <style scoped lang="scss">
   .container{
+    height: 100%;
     background: #f8f8fa;
     .list{
       margin-top: 10px;
@@ -114,4 +128,40 @@ export default {
         }
       }
     }
+    .list-wrapper{
+    background: #fff;
+    padding: 12px;
+    box-sizing: border-box;
+    .list-top, .list-center, .list-bottom{
+      display: flex;
+      font-size: 12px;
+      color: #666666;
+      line-height: 26px;
+      .list-left{
+        flex: 1;
+        text-align: left;
+      }
+      .list-right{
+        text-align: right;
+        flex: 0 0 80px
+      }
+    }
+    .list-top{
+      line-height: 33.3px;
+      font-size: 16px;
+      font-weight: 700;
+      .list-left{
+        color: #282828;
+      }
+      .list-right{
+        color: #ec675d;
+      }
+    }
+    .list-center{
+      line-height: 22px;
+    }
+    .list-bottom{
+      line-height: 43.6px;
+    }
+  }
 </style>

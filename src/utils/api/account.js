@@ -3,7 +3,6 @@ const URLBaseInfo = 'account/baseInfo'
 var account = {
   baseInfo: function (uid) {
     fly.get(URLBaseInfo, {uid: uid}).then(function (response) {
-      console.log('respon', response)
       return response
     })
   },
