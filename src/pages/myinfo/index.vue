@@ -59,8 +59,8 @@
 </div>
 </template>
 <script>
-import account from '@/utils/api/account'
 import upload from '@/utils/upload'
+import account from '@/utils/api/account'
 import MpvueCropper from 'mpvue-cropper'
 
 let wecropper
@@ -126,14 +126,14 @@ export default {
           //   current: '', // 当前显示图片的http链接
           //   urls: [src] // 需要预览的图片http链接列表
           // })
-          console.log(src)
-          upload.uploadFile(src)
+          console.log('dd', src)
+          // var filePath = '/Users/lgs/workspace/xcx/face-xcx/static/images/home.png'
+          upload(src, account.uploadToken())
           // console.log(res)
         }).catch(e => {
-          console.error('获取图片失败')
+          console.error('获取图片失败', e)
         })
     },
-
     bindPickerChange (e) {
       console.log('选中的值为：' + this.sexArr[e.mp.detail.value])
       this.userInfo.gender = e.mp.detail.value
